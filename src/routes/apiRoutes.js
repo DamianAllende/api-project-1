@@ -1,5 +1,6 @@
 const Router = require('express').Router
 const apiRouter = Router()
+const Tweet = require('../models/Tweet')
 
 const courses = [{
   id: 1,
@@ -54,15 +55,23 @@ apiRouter.get('/courses/:courseId', (req, res) => {
 })
 
 // TWEETS ROUTES
-apiRouter.get('/tweets', function(req, res) {
-  const db = req.app.locals.db
+// apiRouter.get('/tweets', function(req, res) {
+//   const db = req.app.locals.db
 
-  db
-    .select()
-    .table('tweets')
+//   db
+//     .select()
+//     .table('tweets')
+//     .then(function(data) {
+//       res.json(data)
+//     })
+// });
+
+apiRouter.get('/tweets', function(req, res) {
+  Tweet
+    .query()
     .then(function(data) {
       res.json(data)
     })
-});
+})
 
 module.exports = apiRouter
