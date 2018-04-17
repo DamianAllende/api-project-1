@@ -1,6 +1,7 @@
 const Router = require('express').Router
 const apiRouter = Router()
 const Tweet = require('../models/Tweet')
+const List = require('../models/List')
 
 const courses = [{
   id: 1,
@@ -73,5 +74,19 @@ apiRouter.get('/tweets', function(req, res) {
       res.json(data)
     })
 })
+
+
+apiRouter.get('/lists', function(req, res) {
+  List
+    .query()
+    .eager('tweets')
+    .then(function(data) {
+      res.json(data)
+    })
+})
+
+
+
+
 
 module.exports = apiRouter
