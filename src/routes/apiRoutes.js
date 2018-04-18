@@ -3,39 +3,7 @@ const apiRouter = Router()
 const Tweet = require('../models/Tweet')
 const List = require('../models/List')
 
-const courses = [{
-  id: 1,
-  name: 'Terminal and UNIX',
-  length: '15 hours'
-}, {
-  id: 2,
-  name: 'Git and GitHub',
-  length: '15 hours'
-}, {
-  id: 3,
-  name: 'HTML + CSS Basics',
-  length: '10 hours'
-}, {
-  id: 4,
-  name: 'Introduction to JavaScript',
-  length: '15 hours'
-}, {
-  id: 5,
-  name: 'Intermediate JavaScript I',
-  length: '20 hours'
-}, {
-  id: 6,
-  name: 'Intermediate JavaScript II',
-  length: '25 hours'
-}, {
-  id: 7,
-  name: 'Node and Express.js Fundamentals',
-  length: '15 hours'
-}, {
-  id: 8,
-  name: 'React.js Fundamentals',
-  length: '25 hours'
-}];
+
 
 apiRouter.get('/courses', (req, res) => {
   res.json(courses)
@@ -67,29 +35,50 @@ apiRouter.get('/courses/:courseId', (req, res) => {
 //     })
 // });
 
-apiRouter.get('/tweets', function(req, res) {
+
+function allTweets (req, res){
   Tweet
     .query()
     .then(function(data) {
       res.json(data)
     })
-})
+}
 
-
-apiRouter.get('/lists', function(req, res) {
-  List
+function allLists (req, res){
+   List
     .query()
     .eager('tweets')
     .then(function(data) {
       res.json(data)
     })
-})
+}
+
+function getSingleTweet (req, res){
+  const id  = parseInt(req.params.tweetId)
+
+  Tweet
+    .query()
+    .findById(id)
+    .then(function(tweet){
+      res.json(tweet).status(200)
+    })
+}
+
+apiRouter
+  .get('/tweets', allTweets)
+  .get('/tweets/:tweetId', getSingleTweet)
+
+
+
+apiRouter.get('/tweets', allTweets)
+
+
+apiRouter.get('/lists', allLists)
 
 // retornar el tweet correspondiente al id 
 
 apiRouter.get('/tweets/:tweetId', function(req, res){
   const tweetId  = parseInt(req.params.tweetId)
-  console.log(typeof tweetId)
   Tweet
     .query()
     .where('id','=', tweetId)
