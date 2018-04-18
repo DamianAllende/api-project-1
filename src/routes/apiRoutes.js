@@ -64,9 +64,48 @@ function getSingleTweet (req, res){
     })
 }
 
+function createNewTweet(req, res){
+  Tweet
+    .query()
+    .insert(req.body) //INSERT INTO
+    .then(function(newTweet){
+      res.json(newTweet).status(200)
+      console.log('Tweet save...')
+    })
+}
+
+function updateTweet(req, res){
+  const tweetId = parseInt(req.params.tweetId)
+  const newData = req.body
+
+  Tweet
+    .query()
+    .updateAndFetchById(tweetId, newData)
+    .then(function(tweetUpdated) {
+      res.json(tweetUpdated).status(200)
+    })
+}
+
+function deleteTweet(req, res) {
+  const tweetId = parseInt(req.params.tweetId)
+
+  Tweet
+    .query()
+    .deleteById(tweetId)
+    .then(function(rowsDeleted) {
+      res.json({
+        tweetsDeleted: rowsDeleted
+      }).status(200)
+    //   res.json(rowsDeleted).status(200)
+    })
+}
+
 apiRouter
   .get('/tweets', allTweets)
   .get('/tweets/:tweetId', getSingleTweet)
+  .post('/tweets', createNewTweet)
+  .put('/tweets/:tweetId', updateTweet)
+  .delete('/tweets/:tweetId', deleteTweet)
 
 
 

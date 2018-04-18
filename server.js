@@ -4,6 +4,8 @@ const { Model } = require('objection')
 
 const ejs = require('ejs')
 
+const bodyParser = require('body-parser')
+
 const connectToDatabase = require('./src/database/connection')
 const knexFile = require('./knexfile')
 
@@ -22,6 +24,8 @@ app.locals.db = appConnectionWithDatabase
 app.engine('ejs', ejs.renderFile)
 app.set('view engine', 'ejs')
 app.set('views', `${__dirname}/src/views`)
+
+app.use(bodyParser.json())
 
 // Setup static files
 app.use(express.static(`${__dirname}/public`))
