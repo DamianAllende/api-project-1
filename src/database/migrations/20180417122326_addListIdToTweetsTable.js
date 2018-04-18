@@ -14,7 +14,7 @@ exports.down = function(knex, Promise) {
   return knex
   	.schema
   	.table('tweets', function(t){
-  		t.dropForeing('listId')
+  		t.dropForeign('listId')
   		t.dropColumn('listId')
   	})
 };

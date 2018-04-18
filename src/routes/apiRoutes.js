@@ -85,7 +85,18 @@ apiRouter.get('/lists', function(req, res) {
     })
 })
 
+// retornar el tweet correspondiente al id 
 
+apiRouter.get('/tweets/:tweetId', function(req, res){
+  const tweetId  = parseInt(req.params.tweetId)
+  console.log(typeof tweetId)
+  Tweet
+    .query()
+    .where('id','=', tweetId)
+    .then(function(data){
+      res.json(data)
+    })
+})
 
 
 
